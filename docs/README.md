@@ -1,7 +1,7 @@
 # 🚀 Radxa Cubie A7A Maximum Overclocking Project
 
-![GitHub Stars](https://img.shields.io/github/stars/tittyyhead/radxa-cubie-a7a-maximum-overclock?style=social)
-![GitHub Forks](https://img.shields.io/github/forks/tittyyhead/radxa-cubie-a7a-maximum-overclock?style=social)
+![GitHub Stars](https://img.shields.io/github/stars/rabs/radxa-cubie-a7a-maximum-overclock?style=social)
+![GitHub Forks](https://img.shields.io/github/forks/rabs/radxa-cubie-a7a-maximum-overclock?style=social)
 ![License](https://img.shields.io/badge/license-GPL%20v2-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Radxa%20Cubie%20A7A-orange.svg)
 ![Performance](https://img.shields.io/badge/NPU-3.0%20TOPS-red.svg)
