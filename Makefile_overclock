@@ -1,0 +1,82 @@
+# NPU Overclock Bypass Makefile - MAXIMUM PERFORMANCE!
+
+obj-m += npu_overclock_bypass.o
+
+KERNEL_DIR = /usr/src/linux-headers-5.15.147-7-a733
+
+all: clean compile
+
+compile:
+	@echo "🔥🔥🔥 COMPILING NPU OVERCLOCK BYPASS! 🔥🔥🔥"
+	@echo "============================================="
+	$(MAKE) -C $(KERNEL_DIR) M=$(PWD) modules
+	@echo "🚀 OVERCLOCK MODULE READY FOR DEPLOYMENT! 🚀"
+
+clean:
+	$(MAKE) -C $(KERNEL_DIR) M=$(PWD) clean
+
+# Deploy and test overclocking!
+overclock: compile
+	@echo
+	@echo "🚀 DEPLOYING NPU OVERCLOCK BYPASS! 🚀"
+	@echo "====================================="
+	@echo
+	@echo "=== Removing old modules ==="
+	-sudo rmmod npu_1120_unlock 2>/dev/null || echo "Module not loaded"
+	-sudo rmmod npu_liberation 2>/dev/null || echo "Module not loaded"
+	@echo
+	@echo "=== Loading OVERCLOCK BYPASS ==="
+	sudo insmod npu_overclock_bypass.ko
+	@echo
+	@echo "=== Verifying module ==="
+	lsmod | grep overclock
+	@echo
+	@echo "=== Checking overclock interface ==="
+	ls -la /sys/devices/platform/soc@3000000/3600000.npu/overclock
+	@echo
+	@echo "🎯 READY FOR OVERCLOCKING! 🎯"
+	@echo "Interface: /sys/devices/platform/soc@3000000/3600000.npu/overclock"
+
+# Test overclocking progression
+test: overclock
+	@echo
+	@echo "⚡ NPU OVERCLOCKING TEST SEQUENCE ⚡"
+	@echo "=================================="
+	@echo
+	@echo "=== Baseline (current frequency) ==="
+	cat /sys/class/devfreq/3600000.npu/cur_freq 2>/dev/null || echo "Devfreq not accessible"
+	@echo
+	@echo "=== Testing 1120MHz (+11% boost) ==="
+	@echo "Setting 1120MHz..."
+	sudo sh -c 'echo 1120 > /sys/devices/platform/soc@3000000/3600000.npu/overclock'
+	@sleep 2
+	@echo
+	@echo "=== Testing 1200MHz (+19% boost) ==="
+	@echo "Setting 1200MHz..."
+	sudo sh -c 'echo 1200 > /sys/devices/platform/soc@3000000/3600000.npu/overclock'
+	@sleep 2
+	@echo
+	@echo "=== MAXIMUM POWER TEST: 1500MHz (+49% boost!) ==="
+	@echo "Setting 1500MHz MAXIMUM OVERCLOCK..."
+	sudo sh -c 'echo 1500 > /sys/devices/platform/soc@3000000/3600000.npu/overclock'
+	@echo
+	@echo "🎉 OVERCLOCKING TEST COMPLETE! 🎉"
+	@echo "Check kernel messages: sudo dmesg | tail -20"
+
+help:
+	@echo "NPU Overclock Bypass - Build System"
+	@echo "==================================="
+	@echo
+	@echo "Targets:"
+	@echo "  compile   - Compile overclock bypass module"
+	@echo "  overclock - Deploy the overclock bypass"
+	@echo "  test      - Run full overclocking test sequence"
+	@echo "  clean     - Clean build files"
+	@echo
+	@echo "🎯 OVERCLOCK FREQUENCIES:"
+	@echo "  1120MHz = +11% boost (proven safe)"
+	@echo "  1200MHz = +19% boost (safe overclock)"
+	@echo "  1344MHz = +33% boost (aggressive)"
+	@echo "  1500MHz = +49% boost (MAXIMUM POWER!)"
+
+.PHONY: all compile clean overclock test help

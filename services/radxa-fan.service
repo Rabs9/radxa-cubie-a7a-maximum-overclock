@@ -1,0 +1,13 @@
+[Unit]
+Description=Radxa Fan Control Service
+After=multi-user.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/home/radxa/fan-shutdown.sh start
+ExecStop=/home/radxa/fan-shutdown.sh stop
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target

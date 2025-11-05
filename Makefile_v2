@@ -1,0 +1,89 @@
+# NPU Liberation Module v2.0 Makefile
+# Advanced frequency unlocking with direct OPP table modification
+
+obj-m += npu_liberation_v2.o
+
+# Kernel build directory
+KERNEL_DIR = /usr/src/linux-headers-5.15.147-7-a733
+PWD = $(shell pwd)
+
+# Default target
+all: clean compile
+
+# Compile the module
+compile:
+	@echo "🔥 COMPILING NPU LIBERATION MODULE v2.0... 🔥"
+	@echo "=============================================="
+	@echo "Kernel headers: $(KERNEL_DIR)"
+	@echo "Build directory: $(PWD)"
+	@echo
+	$(MAKE) -C $(KERNEL_DIR) M=$(PWD) modules
+	@echo
+	@echo "🚀 COMPILATION COMPLETE! 🚀"
+	@echo "Module: npu_liberation_v2.ko"
+	@ls -la *.ko 2>/dev/null || echo "No .ko files found"
+
+# Clean build files
+clean:
+	@echo "🧹 Cleaning build files..."
+	$(MAKE) -C $(KERNEL_DIR) M=$(PWD) clean
+	@rm -f *.o *.ko *.mod.c *.mod *.order *.symvers
+
+# Install and test the module
+install: compile
+	@echo
+	@echo "🚀 DEPLOYING NPU LIBERATION v2.0..."
+	@echo "===================================="
+	@echo
+	@echo "=== Removing old liberation module ==="
+	-sudo rmmod npu_liberation 2>/dev/null || echo "Old module not loaded"
+	@echo
+	@echo "=== Installing NPU Liberation v2.0 ==="
+	sudo insmod npu_liberation_v2.ko
+	@echo
+	@echo "=== Verifying module load ==="
+	lsmod | grep npu_liberation
+	@echo
+	@echo "=== Liberation v2.0 interface ==="
+	ls -la /sys/devices/platform/soc@3000000/3600000.npu/liberation_v2 2>/dev/null || echo "Interface not found yet"
+	@echo
+	@echo "🎯 READY FOR LIBERATION! 🎯"
+	@echo "Use: echo 1 > /sys/devices/platform/soc@3000000/3600000.npu/liberation_v2"
+
+# Test the liberation
+test: install
+	@echo
+	@echo "⚡ TESTING NPU LIBERATION v2.0 ⚡"
+	@echo "================================="
+	@echo
+	@echo "=== Current NPU frequency ==="
+	cat /sys/class/devfreq/3600000.npu/cur_freq
+	@echo
+	@echo "=== Available frequencies (before) ==="
+	cat /sys/class/devfreq/3600000.npu/available_frequencies
+	@echo
+	@echo "=== ACTIVATING LIBERATION v2.0 ==="
+	sudo sh -c 'echo 1 > /sys/devices/platform/soc@3000000/3600000.npu/liberation_v2'
+	@echo "Liberation activated!"
+	@echo
+	@echo "=== Available frequencies (after) ==="
+	cat /sys/class/devfreq/3600000.npu/available_frequencies
+	@echo
+	@echo "🚀 LIBERATION TEST COMPLETE! 🚀"
+
+# Help
+help:
+	@echo "NPU Liberation Module v2.0 - Build System"
+	@echo "=========================================="
+	@echo
+	@echo "Targets:"
+	@echo "  compile  - Compile the liberation module v2.0"
+	@echo "  install  - Compile and install the module"
+	@echo "  test     - Install and test frequency liberation"
+	@echo "  clean    - Clean build files"
+	@echo "  help     - Show this help"
+	@echo
+	@echo "🎯 Goal: Unlock 1120MHz + Enable 2000MHz overclocking"
+	@echo "🔥 Revolutionary OPP table modification approach"
+
+.PHONY: all compile clean install test help
